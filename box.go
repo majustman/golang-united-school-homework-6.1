@@ -43,7 +43,9 @@ func (b *box) ExtractByIndex(i int) (Shape, error) {
 	shape := b.shapes[i]
 	tmpShapes := []Shape{}
 	tmpShapes = append(tmpShapes, b.shapes[0:i]...)
-	tmpShapes = append(tmpShapes, b.shapes[i:]...)
+	if i != len(b.shapes)-1 {
+		tmpShapes = append(tmpShapes, b.shapes[i+1:]...)
+	}
 	b.shapes = tmpShapes
 	return shape, nil
 }
@@ -80,6 +82,21 @@ func (b *box) SumArea() float64 {
 // RemoveAllCircles removes all circles in the list
 // whether circles are not exist in the list, then returns an error
 func (b *box) RemoveAllCircles() error {
-	panic("implement me")
-
+	cnt := 0
+	for i, shape := range b.shapes {
+		_, ok := shape.(Circle)
+		if ok {
+			cnt++
+			tmpShapes := []Shape{}
+			tmpShapes = append(tmpShapes, b.shapes[0:i]...)
+			if i != len(b.shapes)-1 {
+				tmpShapes = append(tmpShapes, b.shapes[i+1:]...)
+			}
+			b.shapes = tmpShapes
+		}
+	}
+	if cnt == 0 {
+		return errors.New("error while removing all circles, there is no circle in the box")
+	}
+	return nil
 }
