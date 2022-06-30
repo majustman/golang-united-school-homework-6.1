@@ -1,6 +1,8 @@
 package golang_united_school_homework
 
-import "errors"
+import (
+	"errors"
+)
 
 // box contains list of shapes and able to perform operations on them
 type box struct {
@@ -84,7 +86,7 @@ func (b *box) SumArea() float64 {
 func (b *box) RemoveAllCircles() error {
 	var tmpShapes []Shape
 	for _, shape := range b.shapes {
-		_, ok := shape.(Circle)
+		_, ok := shape.(*Circle)
 		if !ok {
 			tmpShapes = append(tmpShapes, shape)
 		}
